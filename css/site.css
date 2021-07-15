@@ -14,10 +14,6 @@ main>.container-fluid {
     margin-right: 5px;
 }
 
-.even {
-    font-weight: bold;
-}
-
 body {
     color: var(--dark-color);
 }
@@ -37,14 +33,6 @@ h4,
 h5,
 h6 {
     color: var(--primary-color);
-}
-
-.even {
-    font-weight: bolder;
-}
-
-.odd {
-    font-weight: 100;
 }
 
 main>.container {
@@ -112,4 +100,19 @@ pre[class*="language-"] {
 
 .text-linkedin {
     color: #0072b1;
+}
+.Fizz {
+    color: #0A6AA6;
+}
+
+.Buzz {
+    color:#F2991D;
+}
+
+.FizzBuzz {
+    color: #1DA1F2;
+}
+
+table {
+    table-layout: fixed;
 }

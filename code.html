@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>JavaScript Base Template</title>
+    <title>FizzBuzz | The Code </title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -28,7 +28,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <img src="/img/favicontextmuted.png" alt="" width="30" class="favicontopleft">
-            <a class="navbar-brand" href="/index.html"> JS Template</a>
+            <a class="navbar-brand" href="/index.html">Fizz Buzz</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -52,11 +52,167 @@
         </div>
     </nav>
 
-    <main class="flex-shrink-0">
-        <div class="container">
-            <h1 class="mt-5">Template with dark fixed navbar and sticky footer</h1>
-            <p class="lead">Pin a footer to the bottom of the viewport in desktop browsers with this custom HTML and
-                CSS. A fixed navbar has been added with padding-top: 60px; on the main > .container.</p>
+    <main class="flex-shrink-0" id="content">
+        <div class="container col-xxl-8 px-4 py-5 mt-5">
+            <h2 class="border-1 border-bottom border-dark">The Code</h2>
+            <div class="row">
+                <div class="col" id="codeCol">
+                    <pre>
+                        <code class="language-javascript line-numbers">
+                            //Wrapper function/method - a function that calls other functions
+                            function getNumbers() {
+
+                                // This is where the variables get values from the webpage
+                                let firstInput = document.getElementById("firstValue").value;
+                                let secondInput = document.getElementById("secondValue").value;
+                                let inner = document.getElementById("innerBounds").value;
+                                let outer= document.getElementById("outerBounds").value;
+
+                                // This is where they are checked to make sure they are integers
+                                let first = parseInt(firstInput);
+                                let second = parseInt(secondInput);
+                                innerBounds = parseInt(inner);
+                                outerBounds = parseInt(outer);
+
+                                //setting up boolean and an empty string for error codes
+                                let errorState = false;
+                                let errorMsg = "";
+
+                                //this becomes true if the values are not numbers
+                                if (isNaN(first) || isNaN(second) || isNaN(innerBounds) || isNaN(outerBounds)) {
+                                    errorState = true;
+                                    errorMsg += "Please use numbers&lt;hr/>"
+                                }
+
+                                //this becomes true if the outer bounds value is less than the inner bounds value
+                                if (innerBounds > outerBounds) {
+                                    errorState = true;
+                                    errorMsg += "the inner bound must be less than the outer bound&lt;hr/>"
+                                }
+
+                                // this becomes true if you try to put in negative integers or integers over 10,000
+                                // this sets an limit for the loops
+                                if (first > 10000 || first &lt; 0 || second > 10000 || second &lt; 0 || innerBounds > 10000 || innerBounds &lt; 0 || outerBounds > 10000 || outerBounds &lt; 0) {
+                                    errorState = true;
+                                    errorMsg += "try to keep it in between 0 and 10,000&lt;hr/>"
+                                }
+                                //if any of the previous becomes true, a SweetAlert will fire and exit the function
+                                if (errorState) {
+                                    Swal.fire(
+                                        'Something went wrong',
+                                        `${errorMsg}`,
+                                        'error'
+                                    )
+                                return;
+                                }
+
+                                // this takes the bounds and generates a results array to be displayed
+                                let results = generateFizzBuzz(first, second, innerBounds, outerBounds);
+
+                                /* this is to set a multiplier that was not necessary in the original code
+                                the commented out code is if you want to make the formatted table smaller
+                                to make it look nicer for even bounds, however the styling messes with the
+                                formatting. Otherwise put a 5 in the place of the variable multiplier
+                                and it will still work perfectly fine */
+                                let multiplier = 5;
+                                /* if ((outerBounds - innerBounds + 1) % 5 == 0) {
+                                    multiplier = 5;
+                                } else if ((outerBounds - innerBounds + 1) % 4 == 0) {
+                                    multiplier = 4;
+                                } else {
+                                    multiplier = 5;
+                                } */
+
+                                //this generates the results array, the multiplier was for formatting
+                                displayResults(results, multiplier);
+                            }
+
+                            // This function takes the 4 values and pushes out an array list on whether or not things
+                            // are fizz, buzz, or fizzbuzz
+                            function generateFizzBuzz(first, second, innerBounds, outerBounds) {
+
+                                //creates an empty array to be used to hold all values
+                                let numbers = [];
+
+                                //a for loop that loops in between every value in the bounds
+                                for (let i = innerBounds; i &lt;= outerBounds; i++) {
+
+                                    // if the number is divisible by the first and second inputs it will
+                                    // replace the number with fizz, buzz, or fizzbuzz and then save it to the array
+                                    if (i % first == 0 &amp;&amp; i % second == 0) {
+                                        numbers.push("FizzBuzz");
+                                    } else if (i % first == 0) {
+                                        numbers.push("Fizz");
+                                    } else if (i % second == 0) {
+                                        numbers.push("Buzz");
+                                    } else {
+                                        numbers.push(i);
+                                    }
+                                }
+                                return numbers;
+                            }
+
+                            // this is the function that displays the array
+                            function displayResults(fizzBuzzData, multiplier) {
+
+                                //access the table body element on the DOM
+                                let tableBody = document.getElementById("output");
+
+                                //access the template element on the DOM
+                                let templateRow = document.getElementById("fbTemplate");
+
+                                //clear out any information currently in the table body
+                                tableBody.innerHTML = '';
+
+                                //go through the supplied FB information and fill out the table rows with it
+                                for (let index = 0; index &lt; fizzBuzzData.length; index += multiplier) {
+
+                                    //grab the inside of the template element, but not the template element itself
+                                    const tableRow = document.importNode(templateRow.content, true);
+
+                                    //tableRow represents the &lt;tr> and all &lt;td> from insdie the &lt;template>
+                                    //we only want to interact with the &lt;td> elements
+                                    let rowCols = tableRow.querySelectorAll("td");
+
+                                    //this is taking the values in the array list and assigning it to a row/column on
+                                    // the webpage and since the multiplier is 5, it's in rows of 5
+                                    for (let i = 0; i &lt; multiplier; i++) {
+                                        rowCols[i].classList.add(fizzBuzzData[index + i]);
+                                        rowCols[i].textContent = fizzBuzzData[index + i];
+                                    }
+
+                                    //adds the row to the end of the table body
+                                    tableBody.appendChild(tableRow);
+                                }
+                            }
+                        </code>
+                    </pre>
+                </div>
+                <div class="col-lg-4 col-sm-12" id="explainCol">
+                    <p>The code is seperated into 3 functions.</p>
+                    <h5>getNumbers()</h5>
+                    <p>This uses the <strong>getElementById</strong> function to grab values that are inputed on the
+                        webpage
+                        to change them into javascript values that can be used. These values are then checked to make
+                        sure they
+                        are integers and in a proper format. They are then used in the <strong>generateFizzBuzz</strong>
+                        function to create an array.<strong>
+                            displayResults</strong> then takes the array and displays them on the website.</p>
+                    <h5>generateFizzBuzz()</h5>
+                    <p><strong>generateFizzBuzz</strong> takes two numbers which are <strong>first</strong> and
+                        <strong>second</strong> and goes through the values of <strong>innerBounds</strong> and
+                        <strong>outerBounds</strong> and puts them into an array. If the number is divisble by the
+                        first value then the value is replaced by Fizz, while if the number is divisible by the second
+                        value then the value is replaced by Buzz. If it is divisble by both then it will be FizzBuzz.
+                        This is then returned as the <strong>numbers</strong> array to be
+                        used by <strong>displayResults</strong>.</p>
+                    <h5>displayResults()</h5>
+                    <p> <strong>displayResults</strong> takes the values of ouput from the webpage and the template from under the footer in the html code. 
+                        It then empties out the table so that new values can be shown. It then runs through <strong>fizzBuzzData</strong> with a 
+                        for loop to then display them in rows and columns.
+                    </p>
+                </div>
+            </div>
         </div>
     </main>
 
