@@ -119,3 +119,7 @@ pre[class*="language-"] {
 table {
     table-layout: fixed;
 }
+
+span {
+    color: orange
+}
