@@ -2,7 +2,7 @@
     --primary-color: #1d5888;
     --secondary-color: #4294ff;
     --dark-color: #292929;
-    --white-color: #DFE3E4;
+    --white-color: #f0f1f1;
 }
 
 main>.container,
@@ -16,6 +16,7 @@ main>.container-fluid {
 
 body {
     color: var(--dark-color);
+    background-color: var(--white-color);
 }
 
 nav {
@@ -37,10 +38,12 @@ h6 {
 
 main>.container {
     padding: 60px 15px 0;
+        background-color: var(--white-color);
 }
 
 #content {
     min-height: 90vh;
+        background-color: var(--white-color);
 }
 
 
